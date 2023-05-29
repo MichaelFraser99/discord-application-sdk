@@ -43,7 +43,7 @@ func (s *ApplicationCommandService) GetCommands(ctx context.Context, application
 
 	err = json.Unmarshal(responseBytes, &output)
 	if err != nil {
-		return nil, nil, err
+		return nil, &response, err
 	}
 
 	return output, &response, nil
@@ -67,7 +67,7 @@ func (s *ApplicationCommandService) GetCommand(ctx context.Context, applicationI
 
 	err = json.Unmarshal(responseBytes, &output)
 	if err != nil {
-		return nil, nil, err
+		return nil, &response, err
 	}
 
 	return output, &response, nil
@@ -96,7 +96,7 @@ func (s *ApplicationCommandService) CreateCommand(ctx context.Context, applicati
 
 	err = json.Unmarshal(responseBytes, &output)
 	if err != nil {
-		return nil, nil, err
+		return nil, &response, err
 	}
 
 	return output, &response, nil
@@ -125,7 +125,7 @@ func (s *ApplicationCommandService) PatchCommand(ctx context.Context, applicatio
 
 	err = json.Unmarshal(responseBytes, &output)
 	if err != nil {
-		return nil, nil, err
+		return nil, &response, err
 	}
 
 	return output, &response, nil
