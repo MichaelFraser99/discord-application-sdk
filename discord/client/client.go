@@ -9,7 +9,7 @@ type Client struct {
 	ApplicationCommand applicationCommands.ApplicationCommandsAPI
 }
 
-func (c *Client) NewClient(cfg *config.Config) *Client {
+func NewClient(cfg *config.Config) *Client {
 	return &Client{
 		ApplicationCommand: applicationCommands.New(cfg),
 	}
