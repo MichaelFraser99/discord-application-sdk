@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+	"github.com/MichaelFraser99/discord-application-sdk/discord/utils"
 	"net/http"
 )
 
@@ -16,24 +17,20 @@ type Config struct {
 	TokenType  TokenType
 	Token      string
 	BaseUrl    string  `default:"https://discord.com/api"`
-	ApiVersion *string // omitting will default to the current default version detailed within the discord API documentation
+	apiVersion *string // omitting will default to the current default version detailed within the discord API documentation
 	HTTPClient *http.Client
 }
 
-func NewConfig(tokenType TokenType, token string, baseUrl string, apiVersion *string, httpClient *http.Client) *Config {
+func NewConfig(tokenType TokenType, token string, baseUrl string, httpClient *http.Client) *Config {
 	return &Config{
 		TokenType:  tokenType,
 		Token:      token,
 		BaseUrl:    baseUrl,
-		ApiVersion: apiVersion,
+		apiVersion: utils.String("10"),
 		HTTPClient: httpClient,
 	}
 }
 
 func (c *Config) GetVersionedUrl() string {
-	if c.ApiVersion == nil {
-		return c.BaseUrl
-	} else {
-		return fmt.Sprintf("%s/v%s", c.BaseUrl, *c.ApiVersion)
-	}
+	return fmt.Sprintf("%s/v%s", c.BaseUrl, *c.apiVersion)
 }
