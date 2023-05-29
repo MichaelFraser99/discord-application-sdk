@@ -108,7 +108,7 @@ func (s *ApplicationCommandService) PatchCommand(ctx context.Context, applicatio
 		return nil, nil, err
 	}
 
-	httpRequest, err := http.NewRequest(discordHttp.METHOD_POST, fmt.Sprintf("%s/applications/%s/commands", s.Config.GetVersionedUrl(), applicationID), bytes.NewReader(requestBytes))
+	httpRequest, err := http.NewRequest(discordHttp.METHOD_PATCH, fmt.Sprintf("%s/applications/%s/commands", s.Config.GetVersionedUrl(), applicationID), bytes.NewReader(requestBytes))
 	if err != nil {
 		return nil, nil, err
 	}
