@@ -1,5 +1,5 @@
 # Discord Application Commands SDK
-And SDK enabling the programmatic use of the discord application commands API
+An SDK enabling the programmatic use of the discord application commands API
 
 ## Usage
 ```go
