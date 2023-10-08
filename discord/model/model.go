@@ -23,7 +23,7 @@ type ApplicationCommandOption struct {
 	NameLocalizations        *map[string]string                `json:"name_localizations,omitempty"`
 	Description              string                            `json:"description"`
 	DescriptionLocalizations *map[string]string                `json:"description_localizations,omitempty"`
-	Required                 *bool                             `json:"required,omitempty"`
+	Required                 bool                              `json:"required"`
 	Choices                  *[]ApplicationCommandOptionChoice `json:"choices,omitempty"`
 	Options                  *[]ApplicationCommandOption       `json:"options,omitempty"` //When defining multiple, ensure required values are listed before optional values.
 	ChannelTypes             *[]int                            `json:"channel_types,omitempty"`
