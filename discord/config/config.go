@@ -10,7 +10,7 @@ type TokenType string
 
 const (
 	TOKEN_TYPE_BOT    TokenType = "Bot"
-	TOKEN_TYPE_BEARER           = "Bearer"
+	TOKEN_TYPE_BEARER TokenType = "Bearer"
 )
 
 type Config struct {
