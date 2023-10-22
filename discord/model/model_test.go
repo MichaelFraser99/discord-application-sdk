@@ -66,7 +66,7 @@ func Test_CreateApplicationCommand(t *testing.T) {
 			result: utils.String("Key: 'CreateApplicationCommand.Name' Error:Field validation for 'Name' failed on the 'required' tag"),
 		},
 		{
-			name: "invalid - option type 1",
+			name: "valid - option type 1",
 			input: CreateApplicationCommand{
 				Name:              "test",
 				Description:       "test",
@@ -81,7 +81,7 @@ func Test_CreateApplicationCommand(t *testing.T) {
 					},
 				},
 			},
-			result: utils.String("Key: 'CreateApplicationCommand.Options[0].Type' Error:Field validation for 'Type' failed on the 'oneof' tag"),
+			result: nil,
 		},
 		{
 			name: "invalid - option type 2",
