@@ -18,7 +18,7 @@ type ApplicationCommand struct {
 }
 
 type ApplicationCommandOption struct {
-	Type                     int                              `json:"type"`
+	Type                     int                              `json:"type" validate:"oneof=3 4 5 10"`
 	Name                     string                           `json:"name" validate:"required,excludes= "`
 	NameLocalizations        *map[string]string               `json:"name_localizations,omitempty"`
 	Description              string                           `json:"description"`
