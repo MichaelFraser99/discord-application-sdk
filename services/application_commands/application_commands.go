@@ -1,4 +1,4 @@
-package applicationCommands
+package application_commands
 
 import (
 	"bytes"
@@ -8,6 +8,7 @@ import (
 	"github.com/MichaelFraser99/discord-application-sdk/discord/config"
 	discordHttp "github.com/MichaelFraser99/discord-application-sdk/discord/http"
 	"github.com/MichaelFraser99/discord-application-sdk/discord/model"
+	"github.com/go-playground/validator/v10"
 	"io"
 	"net/http"
 )
@@ -74,6 +75,15 @@ func (s *ApplicationCommandService) GetCommand(ctx context.Context, applicationI
 }
 
 func (s *ApplicationCommandService) CreateCommand(ctx context.Context, applicationID string, request *model.CreateApplicationCommand) (output *model.ApplicationCommand, resp *http.Response, err error) {
+	if request == nil {
+		return nil, nil, fmt.Errorf("request cannot be nil")
+	}
+
+	validate := validator.New(validator.WithRequiredStructEnabled())
+	if validate.Struct(*request) != nil {
+		return nil, nil, err
+	}
+
 	requestBytes, err := json.Marshal(request)
 	if err != nil {
 		return nil, nil, err
@@ -103,6 +113,16 @@ func (s *ApplicationCommandService) CreateCommand(ctx context.Context, applicati
 }
 
 func (s *ApplicationCommandService) PatchCommand(ctx context.Context, applicationID, commandID string, request *model.PatchApplicationCommand) (output *model.ApplicationCommand, resp *http.Response, err error) {
+	if request == nil {
+		return nil, nil, fmt.Errorf("request cannot be nil")
+	}
+
+	validate := validator.New(validator.WithRequiredStructEnabled())
+	err = validate.Struct(*request)
+	if err != nil {
+		return nil, nil, err
+	}
+
 	requestBytes, err := json.Marshal(request)
 	if err != nil {
 		return nil, nil, err

@@ -7,7 +7,7 @@ package main
 
 import (
 	"net/http"
-	
+
 	"github.com/MichaelFraser99/discord-application-sdk/discord/config"
 	"github.com/MichaelFraser99/discord-application-sdk/discord/client"
 )
@@ -19,7 +19,7 @@ func main() {
 		"https://discord.com/api",
 		http.DefaultClient,
 	)
-	
+
 	sdkClient := client.NewClient(sdkConfig)
 }
 ```
