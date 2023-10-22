@@ -46,6 +46,7 @@ func Test_CreateApplicationCommand(t *testing.T) {
 				Options: []ApplicationCommandOption{
 					{
 						Name: "test test",
+						Type: 3,
 					},
 				},
 				Type: utils.Int(3),
@@ -63,6 +64,204 @@ func Test_CreateApplicationCommand(t *testing.T) {
 				Nsfw:              false,
 			},
 			result: utils.String("Key: 'CreateApplicationCommand.Name' Error:Field validation for 'Name' failed on the 'required' tag"),
+		},
+		{
+			name: "invalid - option type 1",
+			input: CreateApplicationCommand{
+				Name:              "test",
+				Description:       "test",
+				DmPermission:      false,
+				DefaultPermission: utils.Bool(false),
+				Type:              utils.Int(3),
+				Nsfw:              false,
+				Options: []ApplicationCommandOption{
+					{
+						Type: 1,
+						Name: "test",
+					},
+				},
+			},
+			result: utils.String("Key: 'CreateApplicationCommand.Options[0].Type' Error:Field validation for 'Type' failed on the 'oneof' tag"),
+		},
+		{
+			name: "invalid - option type 2",
+			input: CreateApplicationCommand{
+				Name:              "test",
+				Description:       "test",
+				DmPermission:      false,
+				DefaultPermission: utils.Bool(false),
+				Type:              utils.Int(3),
+				Nsfw:              false,
+				Options: []ApplicationCommandOption{
+					{
+						Type: 2,
+						Name: "test",
+					},
+				},
+			},
+			result: utils.String("Key: 'CreateApplicationCommand.Options[0].Type' Error:Field validation for 'Type' failed on the 'oneof' tag"),
+		},
+		{
+			name: "valid - option type 3",
+			input: CreateApplicationCommand{
+				Name:              "test",
+				Description:       "test",
+				DmPermission:      false,
+				DefaultPermission: utils.Bool(false),
+				Type:              utils.Int(3),
+				Nsfw:              false,
+				Options: []ApplicationCommandOption{
+					{
+						Type: 3,
+						Name: "test",
+					},
+				},
+			},
+			result: nil,
+		},
+		{
+			name: "valid - option type 4",
+			input: CreateApplicationCommand{
+				Name:              "test",
+				Description:       "test",
+				DmPermission:      false,
+				DefaultPermission: utils.Bool(false),
+				Type:              utils.Int(3),
+				Nsfw:              false,
+				Options: []ApplicationCommandOption{
+					{
+						Type: 4,
+						Name: "test",
+					},
+				},
+			},
+			result: nil,
+		},
+		{
+			name: "valid - option type 5",
+			input: CreateApplicationCommand{
+				Name:              "test",
+				Description:       "test",
+				DmPermission:      false,
+				DefaultPermission: utils.Bool(false),
+				Type:              utils.Int(3),
+				Nsfw:              false,
+				Options: []ApplicationCommandOption{
+					{
+						Type: 5,
+						Name: "test",
+					},
+				},
+			},
+			result: nil,
+		},
+		{
+			name: "invalid - option type 6",
+			input: CreateApplicationCommand{
+				Name:              "test",
+				Description:       "test",
+				DmPermission:      false,
+				DefaultPermission: utils.Bool(false),
+				Type:              utils.Int(3),
+				Nsfw:              false,
+				Options: []ApplicationCommandOption{
+					{
+						Type: 6,
+						Name: "test",
+					},
+				},
+			},
+			result: utils.String("Key: 'CreateApplicationCommand.Options[0].Type' Error:Field validation for 'Type' failed on the 'oneof' tag"),
+		},
+		{
+			name: "invalid - option type 7",
+			input: CreateApplicationCommand{
+				Name:              "test",
+				Description:       "test",
+				DmPermission:      false,
+				DefaultPermission: utils.Bool(false),
+				Type:              utils.Int(3),
+				Nsfw:              false,
+				Options: []ApplicationCommandOption{
+					{
+						Type: 7,
+						Name: "test",
+					},
+				},
+			},
+			result: utils.String("Key: 'CreateApplicationCommand.Options[0].Type' Error:Field validation for 'Type' failed on the 'oneof' tag"),
+		},
+		{
+			name: "invalid - option type 8",
+			input: CreateApplicationCommand{
+				Name:              "test",
+				Description:       "test",
+				DmPermission:      false,
+				DefaultPermission: utils.Bool(false),
+				Type:              utils.Int(3),
+				Nsfw:              false,
+				Options: []ApplicationCommandOption{
+					{
+						Type: 8,
+						Name: "test",
+					},
+				},
+			},
+			result: utils.String("Key: 'CreateApplicationCommand.Options[0].Type' Error:Field validation for 'Type' failed on the 'oneof' tag"),
+		},
+		{
+			name: "invalid - option type 9",
+			input: CreateApplicationCommand{
+				Name:              "test",
+				Description:       "test",
+				DmPermission:      false,
+				DefaultPermission: utils.Bool(false),
+				Type:              utils.Int(3),
+				Nsfw:              false,
+				Options: []ApplicationCommandOption{
+					{
+						Type: 9,
+						Name: "test",
+					},
+				},
+			},
+			result: utils.String("Key: 'CreateApplicationCommand.Options[0].Type' Error:Field validation for 'Type' failed on the 'oneof' tag"),
+		},
+		{
+			name: "valid - option type 10",
+			input: CreateApplicationCommand{
+				Name:              "test",
+				Description:       "test",
+				DmPermission:      false,
+				DefaultPermission: utils.Bool(false),
+				Type:              utils.Int(3),
+				Nsfw:              false,
+				Options: []ApplicationCommandOption{
+					{
+						Type: 10,
+						Name: "test",
+					},
+				},
+			},
+			result: nil,
+		},
+		{
+			name: "invalid - option type 11",
+			input: CreateApplicationCommand{
+				Name:              "test",
+				Description:       "test",
+				DmPermission:      false,
+				DefaultPermission: utils.Bool(false),
+				Type:              utils.Int(3),
+				Nsfw:              false,
+				Options: []ApplicationCommandOption{
+					{
+						Type: 11,
+						Name: "test",
+					},
+				},
+			},
+			result: utils.String("Key: 'CreateApplicationCommand.Options[0].Type' Error:Field validation for 'Type' failed on the 'oneof' tag"),
 		},
 	}
 
