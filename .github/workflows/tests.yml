@@ -14,3 +14,6 @@ jobs:
       - name: Run unit tests
         run: |
           go test ./... -v
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          APPLICATION_ID: ${{ secrets.APPLICATION_ID }}

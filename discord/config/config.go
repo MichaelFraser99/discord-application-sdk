@@ -16,16 +16,22 @@ const (
 type Config struct {
 	TokenType  TokenType
 	Token      string
-	BaseUrl    string  `default:"https://discord.com/api"`
+	BaseUrl    string
 	apiVersion *string // omitting will default to the current default version detailed within the discord API documentation
 	HTTPClient *http.Client
 }
 
-func NewConfig(tokenType TokenType, token string, baseUrl string, httpClient *http.Client) *Config {
+func NewConfig(tokenType TokenType, token string, baseUrl *string, httpClient *http.Client) *Config {
+	var url string
+	if baseUrl == nil {
+		url = "https://discord.com/api"
+	} else {
+		url = *baseUrl
+	}
 	return &Config{
 		TokenType:  tokenType,
 		Token:      token,
-		BaseUrl:    baseUrl,
+		BaseUrl:    url,
 		apiVersion: utils.String("10"),
 		HTTPClient: httpClient,
 	}

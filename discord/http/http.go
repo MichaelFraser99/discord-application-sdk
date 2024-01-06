@@ -19,9 +19,7 @@ const (
 )
 
 type HTTP struct {
-	Config   config.Config
-	request  *http.Request
-	response *http.Response
+	Config config.Config
 }
 
 func NewHTTP(config config.Config) *HTTP {
@@ -30,33 +28,18 @@ func NewHTTP(config config.Config) *HTTP {
 	}
 }
 
-func (h *HTTP) WithRequest(request *http.Request) *HTTP {
-	h.request = request
-	return h
-}
-
-func (h *HTTP) GetResponseAndClear() http.Response {
-	response := *h.response
-	h.response = nil
-	return response
-}
-
-func (h *HTTP) Do(ctx context.Context) error {
-	if h.request == nil {
-		return errors.New("cannot perform request without a request object")
+func (h *HTTP) Do(ctx context.Context, request *http.Request) (*http.Response, error) {
+	if request == nil {
+		return nil, errors.New("cannot perform request without a request object")
 	}
 	if h.Config.HTTPClient == nil {
-		return errors.New("cannot perform request without a http client")
+		return nil, errors.New("cannot perform request without a http client")
 	}
 
-	h.request = h.request.WithContext(ctx)
-	h.request.Header.Set("Content-Type", "application/json")
-	h.request.Header.Set("Authorization", fmt.Sprintf("%s %s", h.Config.TokenType, h.Config.Token))
+	request = request.WithContext(ctx)
+	request.Header.Set("Content-Type", "application/json")
+	request.Header.Set("Authorization", fmt.Sprintf("%s %s", h.Config.TokenType, h.Config.Token))
 
-	do, err := h.Config.HTTPClient.Do(h.request)
-	h.response = do
-	if err != nil {
-		return err
-	}
-	return nil
+	response, err := h.Config.HTTPClient.Do(request)
+	return response, err
 }
