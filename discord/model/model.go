@@ -5,6 +5,69 @@ import (
 	"strings"
 )
 
+type Application struct {
+	Id          string  `json:"id"`
+	Name        *string `json:"name"`
+	Icon        any     `json:"icon"`
+	Description *string `json:"description"`
+	Type        any     `json:"type"`
+	Bot         *struct {
+		Id                   string  `json:"id"`
+		Username             *string `json:"username"`
+		Avatar               any     `json:"avatar"`
+		Discriminator        *string `json:"discriminator"`
+		PublicFlags          *int    `json:"public_flags"`
+		PremiumType          *int    `json:"premium_type"`
+		Flags                *int    `json:"flags"`
+		Bot                  *bool   `json:"bot"`
+		Banner               any     `json:"banner"`
+		AccentColor          any     `json:"accent_color"`
+		GlobalName           any     `json:"global_name"`
+		AvatarDecorationData any     `json:"avatar_decoration_data"`
+		BannerColor          any     `json:"banner_color"`
+	} `json:"bot"`
+	Summary                        *string `json:"summary"`
+	BotPublic                      *bool   `json:"bot_public"`
+	BotRequireCodeGrant            *bool   `json:"bot_require_code_grant"`
+	VerifyKey                      *string `json:"verify_key"`
+	Flags                          *int    `json:"flags"`
+	Hook                           *bool   `json:"hook"`
+	IsMonetized                    *bool   `json:"is_monetized"`
+	RedirectUris                   *[]any  `json:"redirect_uris"`
+	InteractionsEndpointUrl        *string `json:"interactions_endpoint_url"`
+	RoleConnectionsVerificationUrl any     `json:"role_connections_verification_url"`
+	Owner                          *struct {
+		Id                   string  `json:"id"`
+		Username             *string `json:"username"`
+		Avatar               any     `json:"avatar"`
+		Discriminator        *string `json:"discriminator"`
+		PublicFlags          *int    `json:"public_flags"`
+		PremiumType          *int    `json:"premium_type"`
+		Flags                *int    `json:"flags"`
+		Banner               any     `json:"banner"`
+		AccentColor          any     `json:"accent_color"`
+		GlobalName           *string `json:"global_name"`
+		AvatarDecorationData any     `json:"avatar_decoration_data"`
+		BannerColor          any     `json:"banner_color"`
+	} `json:"owner"`
+	ApproximateGuildCount        *int   `json:"approximate_guild_count"`
+	InteractionsEventTypes       *[]any `json:"interactions_event_types"`
+	InteractionsVersion          *int   `json:"interactions_version"`
+	ExplicitContentFilter        *int   `json:"explicit_content_filter"`
+	RpcApplicationState          *int   `json:"rpc_application_state"`
+	StoreApplicationState        *int   `json:"store_application_state"`
+	CreatorMonetizationState     *int   `json:"creator_monetization_state"`
+	VerificationState            *int   `json:"verification_state"`
+	IntegrationPublic            *bool  `json:"integration_public"`
+	IntegrationRequireCodeGrant  *bool  `json:"integration_require_code_grant"`
+	DiscoverabilityState         *int   `json:"discoverability_state"`
+	DiscoveryEligibilityFlags    *int   `json:"discovery_eligibility_flags"`
+	MonetizationState            *int   `json:"monetization_state"`
+	MonetizationEligibilityFlags *int   `json:"monetization_eligibility_flags"`
+	Team                         any    `json:"team"`
+	InternalGuildRestriction     *int   `json:"internal_guild_restriction"`
+}
+
 type ApplicationCommand struct {
 	ID                       string                     `json:"id"`
 	Type                     int                        `json:"type,omitempty"`
@@ -42,7 +105,7 @@ type ApplicationCommandOption struct {
 type ApplicationCommandOptionChoice struct {
 	Name              string             `json:"name" validate:"required,excludes= "`
 	NameLocalizations *map[string]string `json:"name_localizations,omitempty"`
-	Value             interface{}        `json:"value"` //Can be string, integer, or double. Note: if string, max length is 100
+	Value             any                `json:"value"` //Can be string, integer, or double. Note: if string, max length is 100
 }
 
 type CreateApplicationCommand struct {
@@ -68,6 +131,10 @@ type PatchApplicationCommand struct {
 	DmPermission             *bool                      `json:"dm_permission,omitempty"`
 	DefaultPermission        *bool                      `json:"default_permission,omitempty"`
 	Nsfw                     *bool                      `json:"nsfw,omitempty"`
+}
+
+type PatchApplication struct {
+	InteractionsEndpointUrl string `json:"interactions_endpoint_url"`
 }
 
 type ErrorResponse struct {
