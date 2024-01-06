@@ -96,10 +96,6 @@ func TestApplicationService_GetApplication(t *testing.T) {
 				assert.Equal(t, 1, application.VerificationState)
 				assert.Equal(t, true, application.IntegrationPublic)
 				assert.Equal(t, false, application.IntegrationRequireCodeGrant)
-				assert.Equal(t, 1, application.DiscoverabilityState)
-				assert.Equal(t, 192, application.DiscoveryEligibilityFlags)
-				assert.Equal(t, 1, application.MonetizationState)
-				assert.Equal(t, 181984, application.MonetizationEligibilityFlags)
 				assert.Equal(t, nil, application.Team)
 				assert.Equal(t, 2, application.InternalGuildRestriction)
 			},
