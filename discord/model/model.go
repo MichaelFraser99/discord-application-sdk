@@ -1,5 +1,10 @@
 package model
 
+import (
+	"fmt"
+	"strings"
+)
+
 type ApplicationCommand struct {
 	ID                       string                     `json:"id"`
 	Type                     int                        `json:"type,omitempty"`
@@ -54,7 +59,7 @@ type CreateApplicationCommand struct {
 }
 
 type PatchApplicationCommand struct {
-	Name                     *string                    `json:"name,omitempty" validate:"required,excludes= "`
+	Name                     string                     `json:"name,omitempty" validate:"required,excludes= "`
 	NameLocalizations        *map[string]string         `json:"name_localizations,omitempty"`
 	Description              *string                    `json:"description,omitempty"`
 	DescriptionLocalizations *map[string]string         `json:"description_localizations,omitempty"`
@@ -63,4 +68,39 @@ type PatchApplicationCommand struct {
 	DmPermission             *bool                      `json:"dm_permission,omitempty"`
 	DefaultPermission        *bool                      `json:"default_permission,omitempty"`
 	Nsfw                     *bool                      `json:"nsfw,omitempty"`
+}
+
+type ErrorResponse struct {
+	Message    string            `json:"message"`
+	RetryAfter *float32          `json:"retry_after"`
+	Code       int               `json:"code"`
+	Errors     map[string]Causes `json:"errors"`
+}
+
+type Causes struct {
+	Errors []Error `json:"_errors"`
+}
+type Error struct {
+	Code    string `json:"code"`
+	Message string `json:"message"`
+}
+
+func (e ErrorResponse) Format() string {
+	if e.RetryAfter == nil {
+		var causes []string
+		for k, v := range e.Errors {
+			var errorStrings []string
+			for _, e := range v.Errors {
+				errorStrings = append(errorStrings, e.Message)
+			}
+			causes = append(causes, fmt.Sprintf("(%s - %s)", k, strings.Join(errorStrings, ", ")))
+		}
+		if len(causes) > 0 {
+			return fmt.Sprintf("Message: %s | Errors: %s", e.Message, strings.Join(causes, ", "))
+		} else {
+			return fmt.Sprintf("Message: %s", e.Message)
+		}
+	} else {
+		return fmt.Sprintf("Message: %s | Retry after: %f", e.Message, *e.RetryAfter)
+	}
 }

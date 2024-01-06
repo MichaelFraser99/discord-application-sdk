@@ -32,22 +32,21 @@ func (s *ApplicationCommandService) GetCommands(ctx context.Context, application
 		return nil, nil, err
 	}
 
-	err = s.HTTP.WithRequest(httpRequest).Do(ctx)
+	response, err := s.HTTP.Do(ctx, httpRequest)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	response := s.HTTP.GetResponseAndClear()
 	defer response.Body.Close()
 
 	responseBytes, err := io.ReadAll(response.Body)
 
 	err = json.Unmarshal(responseBytes, &output)
 	if err != nil {
-		return nil, &response, err
+		return nil, response, err
 	}
 
-	return output, &response, nil
+	return output, response, nil
 }
 
 func (s *ApplicationCommandService) GetCommand(ctx context.Context, applicationID, commandID string) (output *model.ApplicationCommand, resp *http.Response, err error) {
@@ -56,22 +55,21 @@ func (s *ApplicationCommandService) GetCommand(ctx context.Context, applicationI
 		return nil, nil, err
 	}
 
-	err = s.HTTP.WithRequest(httpRequest).Do(ctx)
+	response, err := s.HTTP.Do(ctx, httpRequest)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	response := s.HTTP.GetResponseAndClear()
 	defer response.Body.Close()
 
 	responseBytes, err := io.ReadAll(response.Body)
 
 	err = json.Unmarshal(responseBytes, &output)
 	if err != nil {
-		return nil, &response, err
+		return nil, response, err
 	}
 
-	return output, &response, nil
+	return output, response, nil
 }
 
 func (s *ApplicationCommandService) CreateCommand(ctx context.Context, applicationID string, request *model.CreateApplicationCommand) (output *model.ApplicationCommand, resp *http.Response, err error) {
@@ -80,8 +78,9 @@ func (s *ApplicationCommandService) CreateCommand(ctx context.Context, applicati
 	}
 
 	validate := validator.New(validator.WithRequiredStructEnabled())
-	if validate.Struct(*request) != nil {
-		return nil, nil, err
+	err = validate.Struct(*request)
+	if err != nil {
+		return nil, nil, fmt.Errorf("malformed request body")
 	}
 
 	requestBytes, err := json.Marshal(request)
@@ -94,22 +93,32 @@ func (s *ApplicationCommandService) CreateCommand(ctx context.Context, applicati
 		return nil, nil, err
 	}
 
-	err = s.HTTP.WithRequest(httpRequest).Do(ctx)
+	response, err := s.HTTP.Do(ctx, httpRequest)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	response := s.HTTP.GetResponseAndClear()
 	defer response.Body.Close()
 
 	responseBytes, err := io.ReadAll(response.Body)
 
+	if response.StatusCode != 201 {
+		if response.StatusCode == 200 {
+			return nil, nil, fmt.Errorf("command with name %s already exists", request.Name)
+		}
+		var errorResponse model.ErrorResponse
+		err = json.Unmarshal(responseBytes, &errorResponse)
+		if err != nil {
+			return nil, nil, err
+		}
+		return nil, nil, fmt.Errorf("error creating application command: %s", errorResponse.Format())
+	}
 	err = json.Unmarshal(responseBytes, &output)
 	if err != nil {
-		return nil, &response, err
+		return nil, response, err
 	}
 
-	return output, &response, nil
+	return output, response, nil
 }
 
 func (s *ApplicationCommandService) PatchCommand(ctx context.Context, applicationID, commandID string, request *model.PatchApplicationCommand) (output *model.ApplicationCommand, resp *http.Response, err error) {
@@ -120,7 +129,7 @@ func (s *ApplicationCommandService) PatchCommand(ctx context.Context, applicatio
 	validate := validator.New(validator.WithRequiredStructEnabled())
 	err = validate.Struct(*request)
 	if err != nil {
-		return nil, nil, err
+		return nil, nil, fmt.Errorf("malformed request body")
 	}
 
 	requestBytes, err := json.Marshal(request)
@@ -133,22 +142,30 @@ func (s *ApplicationCommandService) PatchCommand(ctx context.Context, applicatio
 		return nil, nil, err
 	}
 
-	err = s.HTTP.WithRequest(httpRequest).Do(ctx)
+	response, err := s.HTTP.Do(ctx, httpRequest)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	response := s.HTTP.GetResponseAndClear()
 	defer response.Body.Close()
 
 	responseBytes, err := io.ReadAll(response.Body)
 
-	err = json.Unmarshal(responseBytes, &output)
-	if err != nil {
-		return nil, &response, err
+	if response.StatusCode != 200 {
+		var errorResponse model.ErrorResponse
+		err = json.Unmarshal(responseBytes, &errorResponse)
+		if err != nil {
+			return nil, nil, err
+		}
+		return nil, nil, fmt.Errorf("error updating application command: %s", errorResponse.Format())
 	}
 
-	return output, &response, nil
+	err = json.Unmarshal(responseBytes, &output)
+	if err != nil {
+		return nil, response, err
+	}
+
+	return output, response, nil
 }
 
 func (s *ApplicationCommandService) DeleteCommand(ctx context.Context, applicationID, commandID string) (resp *http.Response, err error) {
@@ -157,13 +174,12 @@ func (s *ApplicationCommandService) DeleteCommand(ctx context.Context, applicati
 		return nil, err
 	}
 
-	err = s.HTTP.WithRequest(httpRequest).Do(ctx)
+	response, err := s.HTTP.Do(ctx, httpRequest)
 	if err != nil {
 		return nil, err
 	}
 
-	response := s.HTTP.GetResponseAndClear()
 	defer response.Body.Close()
 
-	return &response, nil
+	return response, nil
 }
