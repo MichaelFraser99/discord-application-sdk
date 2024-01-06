@@ -48,7 +48,7 @@ func (s *ApplicationService) GetApplication(ctx context.Context, applicationID s
 	return output, response, nil
 }
 
-func (s *ApplicationService) PatchApplication(ctx context.Context, applicationID string, request *model.PatchApplicationCommand) (output *model.Application, resp *http.Response, err error) {
+func (s *ApplicationService) PatchApplication(ctx context.Context, applicationID string, request *model.PatchApplication) (output *model.Application, resp *http.Response, err error) {
 	if request == nil {
 		return nil, nil, fmt.Errorf("request cannot be nil")
 	}
