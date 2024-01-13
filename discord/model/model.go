@@ -134,7 +134,7 @@ type PatchApplicationCommand struct {
 }
 
 type PatchApplication struct {
-	InteractionsEndpointUrl string `json:"interactions_endpoint_url"`
+	InteractionsEndpointUrl *string `json:"interactions_endpoint_url"`
 }
 
 type ErrorResponse struct {
